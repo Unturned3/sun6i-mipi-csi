@@ -656,7 +656,7 @@ int sun6i_video_init(struct sun6i_video *video, struct sun6i_csi *csi,
 	vdev->device_caps	= V4L2_CAP_STREAMING | V4L2_CAP_VIDEO_CAPTURE;
 	video_set_drvdata(vdev, video);
 
-	ret = video_register_device(vdev, VFL_TYPE_GRABBER, -1);
+	ret = video_register_device(vdev, VFL_TYPE_VIDEO, -1);
 	if (ret < 0) {
 		v4l2_err(&csi->v4l2_dev,
 			 "video_register_device failed: %d\n", ret);
