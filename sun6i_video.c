@@ -474,7 +474,7 @@ static int sun6i_video_open(struct file *file)
 	if (ret < 0)
 		goto unlock;
 
-	ret = v4l2_pipeline_pm_use(&video->vdev.entity, 1);
+	ret = v4l2_pipeline_pm_get(&video->vdev.entity);
 	if (ret < 0)
 		goto fh_release;
 
@@ -507,7 +507,7 @@ static int sun6i_video_close(struct file *file)
 
 	_vb2_fop_release(file, NULL);
 
-	v4l2_pipeline_pm_use(&video->vdev.entity, 0);
+	v4l2_pipeline_pm_put(&video->vdev.entity);
 
 	if (last_fh)
 		sun6i_csi_set_power(video->csi, false);
@@ -648,7 +648,7 @@ int sun6i_video_init(struct sun6i_video *video, struct sun6i_csi *csi,
 	vdev->release		= video_device_release_empty;
 	vdev->fops		= &sun6i_video_fops;
 	vdev->ioctl_ops		= &sun6i_video_ioctl_ops;
-	vdev->vfl_type		= VFL_TYPE_GRABBER;
+	vdev->vfl_type		= VFL_TYPE_VIDEO;
 	vdev->vfl_dir		= VFL_DIR_RX;
 	vdev->v4l2_dev		= &csi->v4l2_dev;
 	vdev->queue		= vidq;
